@@ -52,7 +52,38 @@ app
     });
   });
 
-app.route("/get").get(function (req, res) {});
+app
+  .route("/articles/:reqTitle")
+  .get(function (req, res) {
+    const reqTitle = req.params.reqTitle;
+    Article.findOne({ title: reqTitle }, function (err, result) {
+      if (result) {
+        res.write(result.title);
+        res.write(result.article);
+        res.send();
+      } else {
+        res.send("Not Found.");
+      }
+    });
+  })
+  .put(function (req, res) {
+    const reqTitle = req.params.reqTitle;
+    Article.updateOne(
+      { title: reqTitle },
+      {
+        title: "Spider-man!",
+        article:
+          "With Spider-Man's identity now revealed, our friendly neighborhood web-slinger is unmasked and no longer able to separate his normal life as Peter Parker from the high stakes of being a superhero. When Peter asks for help from Doctor Strange, the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.",
+      },
+      function (err) {
+        if (!err) {
+          console.log("Updated");
+        } else {
+          console.log(err);
+        }
+      }
+    );
+  });
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");
