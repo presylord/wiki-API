@@ -83,6 +83,28 @@ app
         }
       }
     );
+  })
+  .patch(function (req, res) {
+    Article.updateOne(
+      { title: req.params.reqTitle },
+      { $set: { article: "Testing Patch" } },
+      function (err) {
+        if (!err) {
+          console.log("Patch Applied");
+        } else {
+          console.log(err);
+        }
+      }
+    );
+  })
+  .delete(function (req, res) {
+    Article.deleteOne({ title: req.params.reqTitle }, function (err) {
+      if (!err) {
+        console.log("Deleted Successfully");
+      } else {
+        console.log(err);
+      }
+    });
   });
 
 app.listen(3000, function () {
